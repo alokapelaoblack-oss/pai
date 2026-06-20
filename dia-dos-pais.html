@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feliz Dia dos Pais!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --laranja: #FF6B35;
+    --teal: #00B4A6;
+    --amarelo: #FFD23F;
+    --roxo: #2E1F47;
+    --creme: #FFFBF2;
+    --rosa: #FF4D8D;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--creme);
+    color: var(--roxo);
+    overflow-x: hidden;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 32px 20px;
+    background: var(--roxo);
+    overflow: hidden;
+  }
+
+  .blob{
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(0px);
+    opacity: 0.95;
+  }
+  .blob1{ width: 420px; height: 420px; background: var(--laranja); top: -160px; left: -120px; }
+  .blob2{ width: 320px; height: 320px; background: var(--teal); bottom: -120px; right: -90px; }
+  .blob3{ width: 180px; height: 180px; background: var(--rosa); top: 50%; right: 8%; opacity: 0.5; }
+
+  .badge{
+    position: relative;
+    z-index: 2;
+    display: inline-block;
+    background: var(--amarelo);
+    color: var(--roxo);
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: clamp(11px, 1.6vw, 14px);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 8px 18px;
+    border-radius: 999px;
+    transform: rotate(-4deg);
+    margin-bottom: 28px;
+    box-shadow: 4px 4px 0 var(--roxo);
+  }
+
+  .hero h1{
+    position: relative;
+    z-index: 2;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.6rem, 8vw, 5.5rem);
+    line-height: 1.02;
+    color: var(--creme);
+    letter-spacing: -1px;
+  }
+
+  .hero h1 .accent{
+    color: var(--amarelo);
+    display: inline-block;
+    transform: rotate(-2deg);
+  }
+
+  .hero p.sub{
+    position: relative;
+    z-index: 2;
+    margin-top: 18px;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: #d8cce8;
+    max-width: 480px;
+  }
+
+  .scroll-cue{
+    position: relative;
+    z-index: 2;
+    margin-top: 56px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: #d8cce8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.85;
+  }
+  .scroll-cue .arrow{
+    width: 22px; height: 22px;
+    border-right: 3px solid var(--amarelo);
+    border-bottom: 3px solid var(--amarelo);
+    transform: rotate(45deg);
+    animation: bounce 1.6s infinite;
+  }
+  @keyframes bounce{
+    0%, 100%{ transform: rotate(45deg) translate(0,0); }
+    50%{ transform: rotate(45deg) translate(6px,6px); }
+  }
+
+  /* ---------- ENVELOPE SECTION ---------- */
+  .letter-section{
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+    position: relative;
+  }
+
+  .eyebrow{
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--laranja);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .letter-section h2{
+    font-family: 'Baloo 2', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin-bottom: 48px;
+    text-align: center;
+  }
+
+  .envelope-wrap{
+    width: min(420px, 90vw);
+    perspective: 1600px;
+  }
+
+  .envelope{
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4/3;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .env-body{
+    position: absolute;
+    inset: 0;
+    background: var(--teal);
+    border-radius: 14px;
+    box-shadow: 0 18px 40px rgba(46,31,71,0.25);
+    overflow: hidden;
+  }
+
+  .env-flap{
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 58%;
+    background: var(--rosa);
+    clip-path: polygon(0 0, 100% 0, 50% 78%);
+    transform-origin: top;
+    transition: transform 0.7s cubic-bezier(.6,-0.1,.3,1.2);
+    z-index: 3;
+  }
+
+  .envelope.open .env-flap{
+    transform: rotateX(180deg);
+  }
+
+  .env-shadow-left, .env-shadow-right{
+    position: absolute;
+    top: 0; bottom: 0; width: 52%;
+    background: rgba(0,0,0,0.07);
+    z-index: 1;
+  }
+  .env-shadow-left{ left: 0; clip-path: polygon(0 0, 100% 100%, 0 100%); }
+  .env-shadow-right{ right: 0; clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+
+  .seal{
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 56px; height: 56px;
+    background: var(--amarelo);
+    border-radius: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: opacity 0.3s, transform 0.4s;
+  }
+  .envelope.open .seal{
+    opacity: 0;
+    transform: translate(-50%,-50%) scale(0.4);
+  }
+
+  .env-hint{
+    position: absolute;
+    bottom: 16px; left: 0; right: 0;
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: rgba(255,255,255,0.9);
+    letter-spacing: 1px;
+    z-index: 2;
+  }
+  .envelope.open .env-hint{ display: none; }
+
+  /* ---------- LETTER CARD ---------- */
+  .letter-card{
+    width: min(640px, 92vw);
+    background: #fff;
+    border-radius: 18px;
+    padding: clamp(28px, 5vw, 56px);
+    margin-top: 28px;
+    box-shadow: 0 24px 60px rgba(46,31,71,0.18);
+    border: 3px solid var(--roxo);
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.6s ease, max-height 0.8s ease, margin-top 0.6s ease, padding 0.6s ease;
+  }
+  .letter-card.show{
+    opacity: 1;
+    max-height: 1400px;
+    margin-top: 28px;
+  }
+
+  .letter-card .to{
+    font-family: 'Baloo 2', sans-serif;
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    color: var(--laranja);
+    margin-bottom: 18px;
+  }
+
+  .letter-card .body-text{
+    font-size: clamp(1rem, 2vw, 1.1rem);
+    line-height: 1.75;
+    color: var(--roxo);
+    white-space: pre-line;
+  }
+
+  .letter-card .body-text strong{ color: var(--rosa); }
+
+  .letter-card .sign{
+    margin-top: 30px;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 1.3rem;
+    color: var(--teal);
+    text-align: right;
+  }
+
+  .editme{
+    background: linear-gradient(transparent 60%, var(--amarelo) 60%);
+    padding: 0 2px;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    text-align: center;
+    padding: 50px 20px 60px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: #9b8aae;
+  }
+  footer .heart{ color: var(--rosa); }
+
+  /* confetti canvas */
+  #confetti{
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .scroll-cue .arrow{ animation: none; }
+    .envelope.open .env-flap, .letter-card{ transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="confetti"></canvas>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="blob blob3"></div>
+
+  <span class="badge">★ Para o melhor pai do mundo ★</span>
+  <h1>Feliz Dia<br>dos <span class="accent">Pais</span>!</h1>
+  <p class="sub">Uma pequena homenagem pra você, <span class="editme">pai</span> — feita com muito carinho.</p>
+
+  <div class="scroll-cue">
+    <span>role para abrir sua carta</span>
+    <span class="arrow"></span>
+  </div>
+</section>
+
+<!-- ===== ENVELOPE / LETTER ===== -->
+<section class="letter-section">
+  <div class="eyebrow">Uma mensagem especial</div>
+  <h2>Toque na carta para abrir 💌</h2>
+
+  <div class="envelope-wrap">
+    <div class="envelope" id="envelope">
+      <div class="env-body">
+        <div class="env-shadow-left"></div>
+        <div class="env-shadow-right"></div>
+        <div class="env-hint">clique para abrir</div>
+      </div>
+      <div class="env-flap"></div>
+      <div class="seal">❤️</div>
+    </div>
+  </div>
+
+  <div class="letter-card" id="letterCard">
+    <div class="to">Para o meu pai,</div>
+    <div class="body-text">Hoje é um dia para parar e dizer o que muitas vezes a correria do dia a dia não deixa: <strong>obrigado por tudo</strong>.
+
+Obrigado por cada conselho, cada esforço silencioso, cada vez que você esteve presente mesmo sem eu perceber o tamanho disso. Você me ensinou, com o exemplo, muito mais do que qualquer palavra poderia ensinar.
+
+Tenho muito orgulho de ser seu filho(a), e espero, um dia, conseguir retribuir um pouco de tudo o que você fez por mim.
+
+Te amo, pai. Feliz Dia dos Pais!</div>
+     <div class="sign">Com amor, <span class="editme">[Neuton]</span></div>
+  </div>
+</section>
+
+<footer>
+  Esse site foi desenvolvido por Ernesto com <span class="heart">♥</span> para o meu pai — Dia dos Pais 2026
+</footer>
+
+<script>
+  const envelope = document.getElementById('envelope');
+  const letterCard = document.getElementById('letterCard');
+  let opened = false;
+
+  envelope.addEventListener('click', () => {
+    if (opened) return;
+    opened = true;
+    envelope.classList.add('open');
+    setTimeout(() => {
+      letterCard.classList.add('show');
+      letterCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      burstConfetti();
+    }, 500);
+  });
+
+  // simple confetti burst
+  const canvas = document.getElementById('confetti');
+  const ctx = canvas.getContext('2d');
+  function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const colors = ['#FF6B35', '#00B4A6', '#FFD23F', '#FF4D8D', '#2E1F47'];
+  let particles = [];
+
+  function burstConfetti(){
+    const rect = envelope.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    for (let i = 0; i < 90; i++){
+      particles.push({
+        x: cx, y: cy,
+        vx: (Math.random() - 0.5) * 12,
+        vy: (Math.random() - 1.4) * 12,
+        size: Math.random() * 8 + 4,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        rotation: Math.random() * 360,
+        rotSpeed: (Math.random() - 0.5) * 12,
+        life: 0
+      });
+    }
+    if (!animating){ animating = true; animate(); }
+  }
+
+  let animating = false;
+  function animate(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      p.vy += 0.35;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rotation += p.rotSpeed;
+      p.life++;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rotation * Math.PI / 180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size * 0.6);
+      ctx.restore();
+    });
+    particles = particles.filter(p => p.y < canvas.height + 50 && p.life < 240);
+    if (particles.length > 0){
+      requestAnimationFrame(animate);
+    } else {
+      animating = false;
+    }
+  }
+</script>
+
+</body>
+</html>
